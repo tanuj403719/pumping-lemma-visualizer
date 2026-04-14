@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pumping Lemma Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- ══ MAIN COLUMN ═══════════════════════════════════════════════════════ -->
+    <main class="main-col">
+
+      <header>
+        <div class="header-eyebrow">Theory of Computation</div>
+        <h1>Pumping Lemma <span class="accent">Visualizer</span></h1>
+        <p class="subtitle">
+          Select a language, enter a string, and watch the proof by contradiction unfold — step by step.
+        </p>
+      </header>
+
+      <!-- ══ REFERENCE BOX ─────────────────────────────────────────────────── -->
+      <aside class="lemma-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-eyebrow">Reference</div>
+          <div class="sidebar-title">Pumping Lemma</div>
+          <div class="sidebar-sub">for Regular Languages</div>
+
+          <div class="sidebar-statement">
+            If <em>L</em> is regular, there exists a
+            pumping length <strong>p ≥ 1</strong> such that every
+            string <strong>s ∈ L</strong> with <strong>|s| ≥ p</strong>
+            can be written as <strong>s = xyz</strong> satisfying:
+          </div>
+
+          <div class="cond-grid">
+            <!-- Condition 1 -->
+            <div class="cond-card cond-1">
+              <div class="cond-num">①</div>
+              <div class="cond-body">
+                <div class="cond-formula">|xy| ≤ p</div>
+                <div class="cond-name">Prefix bound</div>
+                <div class="cond-desc">
+                  Together, <em>x</em> and <em>y</em> span at most
+                  the first <em>p</em> characters of <em>s</em>.
+                </div>
+              </div>
+            </div>
+
+            <!-- Condition 2 -->
+            <div class="cond-card cond-2">
+              <div class="cond-num">②</div>
+              <div class="cond-body">
+                <div class="cond-formula">|y| ≥ 1</div>
+                <div class="cond-name">Non-empty pump</div>
+                <div class="cond-desc">
+                  The middle segment <em>y</em> must contain
+                  at least one character — it cannot be empty.
+                </div>
+              </div>
+            </div>
+
+            <!-- Condition 3 -->
+            <div class="cond-card cond-3">
+              <div class="cond-num">③</div>
+              <div class="cond-body">
+                <div class="cond-formula">∀ i ≥ 0, xy<sup>i</sup>z ∈ L</div>
+                <div class="cond-name">Closure under pumping</div>
+                <div class="cond-desc">
+                  Repeating <em>y</em> any number of times — including
+                  zero — must keep the resulting string inside <em>L</em>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <!-- Proof strategy -->
+          <div class="sidebar-strategy">
+            <div class="strategy-label">Proof by Contradiction</div>
+            <ol class="strategy-steps">
+              <li>Assume <em>L</em> is regular.</li>
+              <li>Let <em>p</em> be the pumping length.</li>
+              <li>Pick a witness <strong>s ∈ L</strong> with <strong>|s| ≥ p</strong>.</li>
+              <li>Show <strong>every</strong> valid split <em>xyz</em> fails condition ③ for some <em>i</em>.</li>
+              <li>Contradiction — <em>L</em> is <strong>not</strong> regular. □</li>
+            </ol>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <!-- Segment key -->
+          <div class="sidebar-key-title">Segment key</div>
+          <div class="sidebar-key">
+            <div class="key-row">
+              <span class="key-swatch key-x">x</span>
+              <span class="key-label">Prefix — never pumped</span>
+            </div>
+            <div class="key-row">
+              <span class="key-swatch key-y">y</span>
+              <span class="key-label">Pump target — repeated <em>i</em> times</span>
+            </div>
+            <div class="key-row">
+              <span class="key-swatch key-z">z</span>
+              <span class="key-label">Suffix — never pumped</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── STEP 1 — Language ─────────────────────────────────────────────── -->
+      <section class="step-section">
+        <div class="step-header">
+          <div class="step-badge">1</div>
+          <h2>Choose a Language</h2>
+        </div>
+
+        <div class="lang-grid" id="lang-grid">
+          <button class="lang-card" data-key="anbn" aria-pressed="false">
+            <span class="lc-math">aⁿbⁿ</span>
+            <span class="lc-title">Equal counts</span>
+            <span class="lc-notation">{ aⁿbⁿ | n ≥ 0 }</span>
+          </button>
+          <button class="lang-card" data-key="anbncn" aria-pressed="false">
+            <span class="lc-math">aⁿbⁿcⁿ</span>
+            <span class="lc-title">Triple equal</span>
+            <span class="lc-notation">{ aⁿbⁿcⁿ | n ≥ 0 }</span>
+          </button>
+          <button class="lang-card" data-key="ww" aria-pressed="false">
+            <span class="lc-math">ww</span>
+            <span class="lc-title">Copy language</span>
+            <span class="lc-notation">{ ww | w ∈ {a,b}* }</span>
+          </button>
+          <button class="lang-card" data-key="an2" aria-pressed="false">
+            <span class="lc-math">aⁿ²</span>
+            <span class="lc-title">Perfect squares</span>
+            <span class="lc-notation">{ aⁿ² | n ≥ 0 }</span>
+          </button>
+          <button class="lang-card lang-card--custom" data-key="custom" aria-pressed="false">
+            <span class="lc-math">+</span>
+            <span class="lc-title">Custom</span>
+            <span class="lc-notation">Define your own</span>
+          </button>
+        </div>
+
+        <div class="example-panel">
+          <div class="example-title">Examples</div>
+          <div class="example-picker-row">
+            <select id="example-select" class="example-select" aria-label="Choose an example">
+              <option value="">Select an example...</option>
+              <option value="anbn" data-expr="a^n b^n" data-sample="aaabbb" data-p="3">{ a^n b^n | n &ge; 0 }</option>
+              <option value="anbncn" data-expr="a^n b^n c^n" data-sample="aaabbbccc" data-p="3">{ a^n b^n c^n | n &ge; 0 }</option>
+              <option value="ww" data-expr="ww" data-sample="abab" data-p="3">{ ww | w &isin; {a,b}* }</option>
+              <option value="an2" data-expr="a^(n^2)" data-sample="aaaaaaaaa" data-p="3">{ a^(n^2) | n &ge; 0 }</option>
+              <option value="ex518" data-expr="a^(i^2)" data-sample="aaaaaaaaa" data-p="3">{ a^(i^2) | i &ge; 1 }</option>
+              <option value="ex519" data-expr="{a^p | p is prime}" data-sample="aaaaa" data-p="3">{ a^p | p is prime }</option>
+              <option value="ex520" data-expr="0^n 1^n" data-sample="000111" data-p="3">{ 0^i 1^i | i &ge; 1 }</option>
+            </select>
+            <button type="button" id="example-custom-btn" class="example-custom-btn">Custom</button>
+          </div>
+        </div>
+
+        <div class="custom-builder" id="custom-builder" hidden>
+          <div class="expr-shell">
+            <div class="expr-head">Select or Define Language</div>
+
+            <label for="custom-expression" class="expr-label">Or type a custom expression</label>
+            <div class="expr-input-row">
+              <input id="custom-expression" class="expr-input" type="text" placeholder="e.g. a^n b^n or regex:^a*b*$" autocomplete="off" spellcheck="false" />
+              <button type="button" id="custom-clear" class="expr-clear">Clear</button>
+            </div>
+
+            <div class="symbol-box">
+              <div class="symbol-title">Symbols</div>
+              <div class="symbol-grid" id="symbol-grid">
+                <button type="button" class="sym-btn" data-token="a">a</button>
+                <button type="button" class="sym-btn" data-token="b">b</button>
+                <button type="button" class="sym-btn" data-token="c">c</button>
+                <button type="button" class="sym-btn" data-token="n">n</button>
+                <button type="button" class="sym-btn" data-token="m">m</button>
+                <button type="button" class="sym-btn" data-token="w">w</button>
+                <button type="button" class="sym-btn" data-token="^">^</button>
+                <button type="button" class="sym-btn" data-token="2">2</button>
+                <button type="button" class="sym-btn" data-token="*">*</button>
+                <button type="button" class="sym-btn" data-token="{">{</button>
+                <button type="button" class="sym-btn" data-token="}">}</button>
+                <button type="button" class="sym-btn" data-token="|">|</button>
+                <button type="button" class="sym-btn" data-token=">=">>=</button>
+                <button type="button" class="sym-btn" data-token="<="><=</button>
+                <button type="button" class="sym-btn" data-token="ε">ε</button>
+                <button type="button" class="sym-btn sym-btn--warn" data-action="backspace">⌫</button>
+              </div>
+            </div>
+
+            <div class="detect-banner" id="detect-banner" aria-live="polite">
+              Type a custom language expression to define membership.
+            </div>
+          </div>
+
+          <!-- Hidden rule state used by the proof engine -->
+          <div class="rule-state" hidden>
+            <input id="custom-lang-label" type="text" />
+            <input type="checkbox" id="c-regex" class="c-check" />
+            <input type="text" id="c-regex-val" class="c-text" />
+            <input type="checkbox" id="c-count" class="c-check" />
+            <input type="text" id="c-char1" class="c-char" maxlength="1" />
+            <select id="c-count-op" class="c-select">
+              <option value="eq">equals</option>
+              <option value="lt">is less than</option>
+              <option value="gt">is greater than</option>
+              <option value="lte">≤</option>
+              <option value="gte">≥</option>
+            </select>
+            <input type="text" id="c-char2" class="c-char" maxlength="1" />
+            <input type="checkbox" id="c-half" class="c-check" />
+            <input type="checkbox" id="c-perfsq" class="c-check" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ── STEP 2 — Setup ────────────────────────────────────────────────── -->
+      <section class="step-section">
+        <div class="step-header">
+          <div class="step-badge">2</div>
+          <h2>Set Up the Proof</h2>
+        </div>
+
+        <div class="setup-row">
+          <div class="field field--grow">
+            <label for="sample-string">
+              Sample string <em>s</em>
+              <span class="field-hint">must be in L and have length ≥ p</span>
+            </label>
+            <input id="sample-string" type="text"
+              placeholder="e.g.  aaabbb"
+              autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="pump-input">Pumping length <em>p</em></label>
+            <input id="pump-input" type="number" min="1" max="12" value="3" />
+          </div>
+          <button id="run-btn" disabled>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Run Proof
+          </button>
+        </div>
+
+        <div class="error-bar" id="lang-error" hidden></div>
+      </section>
+
+      <!-- ── RESULTS ───────────────────────────────────────────────────────── -->
+
+      <section class="result-card" id="string-section" hidden>
+        <h3>Witness string <em>s</em></h3>
+        <p class="string-desc" id="string-desc"></p>
+        <div class="string-visual" id="string-visual"></div>
+        <div class="legend">
+          <span class="leg leg-x">x</span>
+          <span class="leg leg-y">y &nbsp;pumped</span>
+          <span class="leg leg-z">z</span>
+          <span class="leg-rule">|xy| ≤ p &nbsp;·&nbsp; |y| ≥ 1 &nbsp;·&nbsp; |s| ≥ p</span>
+        </div>
+      </section>
+
+      <section class="result-card" id="partitions-section" hidden>
+        <h3>All valid partitions of <em>s</em></h3>
+        <p class="result-intro">
+          The Pumping Lemma says <em>some</em> partition must survive all pump values.
+          We test every one.
+        </p>
+        <div id="partitions-list"></div>
+      </section>
+
+      <section class="result-card" id="log-section" hidden>
+        <h3>Proof log</h3>
+        <div class="log" id="log"></div>
+        <div class="verdict" id="verdict"></div>
+      </section>
+
+    </main>
+
+  </div><!-- /app-layout -->
+  <script src="app.js"></script>
+</body>
+</html>
